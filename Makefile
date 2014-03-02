@@ -2,7 +2,7 @@
 BASEDIR := $(shell pwd)
 
 # Libmaple location
-LIB_MAPLE_HOME ?= /home/colin/documents/github/libmaple
+LIB_MAPLE_HOME ?= /home/colin/documents/college/marc/libmaple
 
 # Board configuration
 BOARD ?= maple
