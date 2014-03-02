@@ -13,15 +13,31 @@ extern "C" {
 
 Robot embeddedRobot;
 
+volatile int numTimes;
+
+
+// this function runs interrupt code...
+void interruptFunc()
+{
+	numTimes++;
+
+	return;
+}
+
 void setup(void) {
     pinMode(BOARD_LED_PIN, OUTPUT);
 
     embeddedRobot = robot_create(0, 0);
+
+    // bind the interrupt
+    pinMode(BOARD_BUTTON_PIN, INPUT);
+    attachInterrupt(BOARD_BUTTON_PIN, interruptFunc, RISING);
 }
 
 void loop(void) {
-	SerialUSB.println("Testing123");
-	SerialUSB.print("Robot X: "); SerialUSB.print(embeddedRobot.xPos);
+	SerialUSB.println(numTimes);
+	//SerialUSB.println("Testing123");
+	//SerialUSB.print("Robot X: "); SerialUSB.print(embeddedRobot.xPos);
 }
 
 // Standard libmaple init() and main.
