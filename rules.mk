@@ -26,7 +26,7 @@ BUILDDIRS += $(addprefix $(BUILD_PATH)/$(d)/, $(PROJECT_BUILD_DIRS))
 # need to add it here.
 PROJECT_INCLUDE_DIRS := include
 
-#EXTERNAL_INCLUDE_DIRS := /some/external/include/dir/with/absolute/path
+EXTERNAL_INCLUDE_DIRS := /home/colin/documents/college/marc/micromouse-sim/src/
 
 FLAGS_ABS_INCLUDE := $(addprefix -I$(d)/, $(PROJECT_INCLUDE_DIRS))
 FLAGS_ABS_INCLUDE += $(addprefix -I/, $(EXTERNAL_INCLUDE_DIRS))

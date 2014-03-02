@@ -9,7 +9,7 @@ BOARD ?= maple
 MEMORY_TARGET ?= flash
 
 # Custom modules listed here.
-USER_MODULES :=
+USER_MODULES := ../micromouse-sim/src/logic
 
 # === You don't have to edit anything below this line ==========================
 

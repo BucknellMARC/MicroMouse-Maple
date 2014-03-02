@@ -7,46 +7,21 @@ char input;
 char inputBuffer[BUFFER_SIZE];
 int bufferLoc = 0;
 
+extern "C" {
+	#include <logic/Robot.h>
+}
+
+Robot embeddedRobot;
+
 void setup(void) {
     pinMode(BOARD_LED_PIN, OUTPUT);
+
+    embeddedRobot = robot_create(0, 0);
 }
 
 void loop(void) {
-	// echoes whatever is written to the screen
-	SerialUSB.read(&input, 1);
-	SerialUSB.write(&input, 1);
-	//SerialUSB.print((int)input);
-
-	// check for newline
-	if (input == '\r') {
-		SerialUSB.print('\n');
-		SerialUSB.write("-> ", 3);
-
-		bufferLoc = 0;
-	}
-	else if (input == 127) {
-		// blank out the buffer
-		SerialUSB.print('\r');
-		for (int n = 0; n < (bufferLoc + 3); n++) {
-			SerialUSB.write(" ", 1);
-		}
-
-		bufferLoc--;
-		if (bufferLoc < 0) {
-			bufferLoc = 0;
-		}
-
-		SerialUSB.print('\r');
-		SerialUSB.write("-> ", 3);
-		SerialUSB.write(inputBuffer, bufferLoc);
-	}
-	// else, add to the buffer
-	else if (bufferLoc < BUFFER_SIZE) {
-		inputBuffer[bufferLoc++] = input;
-	}
-	else {
-		bufferLoc = 0;
-	}
+	SerialUSB.println("Testing123");
+	SerialUSB.print("Robot X: "); SerialUSB.print(embeddedRobot.xPos);
 }
 
 // Standard libmaple init() and main.
