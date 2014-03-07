@@ -13,7 +13,7 @@ void setup(void) {
 void loop(void) {
 	if (newData) {
 		// print out the information
-		SerialUSB.println("Interrupt Triggered!\n");
+		SerialUSB.println("Interrupt Triggered!");
 		SerialUSB.print("Pin 5: ");
 		SerialUSB.print(pin5);
 		SerialUSB.println();
