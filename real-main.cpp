@@ -1,52 +1,25 @@
 // Here's a wirish include:
 #include <wirish/wirish.h>
 
-// setup() and loop():
-static const int BUFFER_SIZE = 256;
-char input;
-char inputBuffer[BUFFER_SIZE];
-int bufferLoc = 0;
-
-extern "C" {
-	#include <logic/Robot.h>
-}
-
-Robot embeddedRobot;
-
-volatile int numTimes;
-volatile int state = LOW;
-
-
-// this function runs interrupt code...
-void interruptFunc()
-{
-	numTimes++;
-
-	if (state == LOW) {
-		state = HIGH;
-	}
-	else {
-		state = LOW;
-	}
-	digitalWrite(BOARD_LED_PIN, state);
-
-	return;
-}
+#include "fpga-comm/test.h"
 
 void setup(void) {
+	// init the FPGA comm and bind interrupt
+	comm_init();
+
     pinMode(BOARD_LED_PIN, OUTPUT);
-
-    embeddedRobot = robot_create(0, 0);
-
-    // bind the interrupt
-    pinMode(BOARD_BUTTON_PIN, INPUT);
-    attachInterrupt(BOARD_BUTTON_PIN, interruptFunc, RISING);
 }
 
 void loop(void) {
-	SerialUSB.println(numTimes);
-	//SerialUSB.println("Testing123");
-	//SerialUSB.print("Robot X: "); SerialUSB.print(embeddedRobot.xPos);
+	if (newData) {
+		// print out the information
+		SerialUSB.println("Interrupt Triggered!\n");
+		SerialUSB.print("Pin 5: ");
+		SerialUSB.print(pin5);
+		SerialUSB.println();
+
+		newData = 0;
+	}
 }
 
 // Standard libmaple init() and main.

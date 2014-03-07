@@ -14,7 +14,7 @@ include $(MAKEDIR)/header.mk
 # the variable BUILDDIRS, like this. $(BUILD_PATH) is the directory
 # where compilation output (like object files) goes. The variable $(d)
 # gets expanded to the directory containing this rules.mk file.
-PROJECT_BUILD_DIRS :=
+PROJECT_BUILD_DIRS := fpga-comm
 
 BUILDDIRS += $(addprefix $(BUILD_PATH)/$(d)/, $(PROJECT_BUILD_DIRS))
 
@@ -57,7 +57,7 @@ ASFLAGS_$(d) :=
 ### Source files
 
 # cSRCS_$(d) are the C source files we want compiled.
-cSRCS_$(d) :=
+cSRCS_$(d) := 
 
 # cppSRCS_$(d) are the C++ sources we want compiled.  We have our own
 # main.cpp, and one additional file.
@@ -65,10 +65,10 @@ cSRCS_$(d) :=
 # We can't call our main file main.cpp, or libmaple's build system
 # will get confused and try to build it without our CXXFLAGS. So call
 # it something else. Annoying! Hopefully LeafLabs will fix it soon.
-cppSRCS_$(d) := real-main.cpp
+cppSRCS_$(d) := real-main.cpp fpga-comm/test.cpp
 
 # sSRCS_$(d) are the assembly sources. We don't have any.
-sSRCS_$(d) :=
+sSRCS_$(d) := 
 
 ###############################################################################
 
