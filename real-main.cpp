@@ -14,12 +14,21 @@ extern "C" {
 Robot embeddedRobot;
 
 volatile int numTimes;
+volatile int state = LOW;
 
 
 // this function runs interrupt code...
 void interruptFunc()
 {
 	numTimes++;
+
+	if (state == LOW) {
+		state = HIGH;
+	}
+	else {
+		state = LOW;
+	}
+	digitalWrite(BOARD_LED_PIN, state);
 
 	return;
 }
