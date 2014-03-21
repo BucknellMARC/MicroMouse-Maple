@@ -15,11 +15,7 @@ void FPGACommIH();
 
 FPGAComm* FPGAComm::getInstance()
 {
-	if(singleton.initialized) {
-		return &singleton;
-	}
-
-	return NULL;
+	return &singleton;
 }
 
 FPGAInPacket FPGAComm::getLastPacket()
@@ -114,6 +110,8 @@ void FPGACommIH()
 	FPGAComm* comm = FPGAComm::getInstance();
 
 	comm->receive((FPGAInPacket*)&lastPacket);
+
+	digitalWrite(BOARD_LED_PIN, HIGH);
 }
 
 #endif
