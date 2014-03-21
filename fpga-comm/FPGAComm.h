@@ -1,39 +1,43 @@
+#ifndef FPGA_COMM_H
+#define FPGA_COMM_H
+
+#include <wirish/wirish.h>
+
 struct FPGAInPacket
 {
-	bool leftWall;
-	bool rightWall;
-	bool frontWall;
+	int leftWall;
+	int rightWall;
+	int frontWall;
+
+	int testing;
 };
 
 struct FPGAOutPacket
 {
-	Direction direction;
-
+	//Direction direction;
+	int testing;
 };
 
 class FPGAComm
 {
-	// Private Members
 private:
-	FPGAComm singleton;
-	volatile FPGAInPacket lastPacket;
+	static FPGAComm singleton;
 
 	bool initialized;
 
 	uint8 inPin;
 	uint8 outPin;
-	uint8 intPin;
-
-private:
-	FPGAComm();
-	~FPGAComm();
+	uint8 interruptPin;
 
 public:
-	FPGAComm getInstance();
+	static FPGAComm* getInstance();
 	FPGAInPacket getLastPacket();
 
-	void init(uint8 inPin, uint8 outPin, uint8i intPin);
+	void init(uint8 inPin, uint8 outPin, uint8 intPin);
 	void deinit();
 
 	void send(FPGAOutPacket outPacket);
+	void receive(FPGAInPacket* inPacket);
 };
+
+#endif
