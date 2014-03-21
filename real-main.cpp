@@ -1,25 +1,52 @@
 // Here's a wirish include:
 #include <wirish/wirish.h>
 
-#include "fpga-comm/test.h"
+#include "fpga-comm/FPGAComm.h"
+
+FPGAComm* comm;
 
 void setup(void) {
-	// init the FPGA comm and bind interrupt
-	comm_init();
+	
+	// init the FPGA comm
+	comm = FPGAComm::getInstance();
 
-    pinMode(BOARD_LED_PIN, OUTPUT);
+	FPGAPinInLayout inLayout;
+	inLayout.leftWall = D0;
+	inLayout.frontWall = D1;
+	inLayout.rightWall = D2;
+	inLayout.interrupt = D13;
+
+	FPGAPinOutLayout outLayout;
+	outLayout.drive = D6;
+	outLayout.turn = D7;
+	outLayout.dataStart = D8;
+	outLayout.interrupt = D12;
+
+	comm->init(inLayout, outLayout);
+
+	pinMode(BOARD_LED_PIN, OUTPUT);
 }
 
 void loop(void) {
-	if (newData) {
-		// print out the information
-		SerialUSB.println("Interrupt Triggered!");
-		SerialUSB.print("Pin 5: ");
-		SerialUSB.print(pin5);
-		SerialUSB.println();
 
-		newData = 0;
+	if (comm->isNewData()) {
+		SerialUSB.println("Found new data!");
+
+		FPGAInPacket packet = comm->getLastPacket();
+
+		SerialUSB.print("LeftWall: ");
+		SerialUSB.println(packet.leftWall);
+
+		SerialUSB.print("FrontWall: ");
+		SerialUSB.println(packet.frontWall);
+
+		SerialUSB.print("RightWall: ");
+		SerialUSB.println(packet.rightWall);
 	}
+
+	//toggleLED();
+	digitalWrite(BOARD_LED_PIN, LOW);
+	delay(250);
 }
 
 // Standard libmaple init() and main.
