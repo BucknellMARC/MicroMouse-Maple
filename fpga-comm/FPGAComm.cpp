@@ -6,6 +6,9 @@
 #include <wirish/wirish.h>
 #include <string.h>
 
+// declare the singleton object
+FPGAComm FPGAComm::singleton;
+
 // last packet and interrupt handlers
 volatile FPGAInPacket lastPacket;
 void FPGACommIH();
@@ -21,6 +24,8 @@ FPGAComm* FPGAComm::getInstance()
 
 FPGAInPacket FPGAComm::getLastPacket()
 {
+	newData = false;
+
 	FPGAInPacket* returnPacket = (FPGAInPacket*)&lastPacket;
 	return *returnPacket;
 }
@@ -93,6 +98,13 @@ void FPGAComm::receive(FPGAInPacket* inPacket)
 	inPacket->leftWall = digitalRead(in.leftWall);
 	inPacket->frontWall = digitalRead(in.frontWall);
 	inPacket->rightWall = digitalRead(in.rightWall);
+
+	newData = true;
+}
+
+bool FPGAComm::isNewData()
+{
+	return newData;
 }
 
 // intterrupt handler

@@ -40,6 +40,7 @@ private:
 	static FPGAComm singleton;
 
 	bool initialized;
+	bool newData;
 
 	FPGAPinInLayout in;
 	FPGAPinOutLayout out;
@@ -53,6 +54,7 @@ public:
 
 	void send(FPGAOutPacket outPacket);
 	void receive(FPGAInPacket* inPacket);
+	bool isNewData();
 };
 
 #endif
