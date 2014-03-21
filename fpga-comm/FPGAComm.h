@@ -8,14 +8,30 @@ struct FPGAInPacket
 	int leftWall;
 	int rightWall;
 	int frontWall;
-
-	int testing;
 };
 
 struct FPGAOutPacket
 {
-	//Direction direction;
-	int testing;
+	bool drive;
+	bool turn;
+
+	uint8 data;
+};
+
+struct FPGAPinInLayout {
+	uint8 leftWall;			// HIGH if there is a wall
+	uint8 frontWall;		//
+	uint8 rightWall;		//
+
+	uint8 interrupt;
+};
+
+struct FPGAPinOutLayout {
+	uint8 drive;			// drive command pin
+	uint8 turn;				// turn command pin
+	uint8 dataStart;		// start of 4 sequential data pins
+
+	uint8 interrupt;
 };
 
 class FPGAComm
@@ -25,16 +41,14 @@ private:
 
 	bool initialized;
 
-	uint8 inPin;
-	uint8 outPin;
-	uint8 interruptPin;
-	uint8 sendPin;
+	FPGAPinInLayout in;
+	FPGAPinOutLayout out;
 
 public:
 	static FPGAComm* getInstance();
 	FPGAInPacket getLastPacket();
 
-	void init(uint8 inPin, uint8 outPin, uint8 intPin, uint8 sendPin);
+	void init(FPGAPinInLayout inLayout, FPGAPinOutLayout outLayout);
 	void deinit();
 
 	void send(FPGAOutPacket outPacket);

@@ -25,21 +25,29 @@ FPGAInPacket FPGAComm::getLastPacket()
 	return *returnPacket;
 }
 
-void FPGAComm::init(uint8 inPin, uint8 outPin, uint8 intPin, uint8 sendPin)
+void FPGAComm::init(FPGAPinInLayout inLayout, FPGAPinOutLayout outLayout)
 {
-	this->inPin = inPin;
-	this->outPin = outPin;
-	this->interruptPin = intPin;
-	this->sendPin = sendPin;
+	in = inLayout;
+	out = outLayout;
 
-	// properly configure the pins
-	pinMode(inPin, INPUT);
-
-	pinMode(outPin, OUTPUT);
-	pinMode(sendPin, OUTPUT);
+	// configure the inputs
+	pinMode(in.leftWall, INPUT);
+	pinMode(in.frontWall, INPUT);
+	pinMode(in.rightWall, INPUT);
 
 	// attach the interrupt
-	attachInterrupt(intPin, FPGACommIH, RISING);
+	attachInterrupt(in.interrupt, FPGACommIH, RISING);
+
+	// configure the outputs
+	pinMode(out.drive, OUTPUT);
+	pinMode(out.turn, OUTPUT);
+	
+	pinMode(out.dataStart, OUTPUT);
+	pinMode(out.dataStart + 1, OUTPUT);
+	pinMode(out.dataStart + 2, OUTPUT);
+	pinMode(out.dataStart + 3, OUTPUT);
+	
+	pinMode(out.interrupt, OUTPUT);
 
 	// zero out the last packet
 	memset((FPGAInPacket*)(&lastPacket), 0, sizeof(FPGAInPacket));
@@ -47,29 +55,44 @@ void FPGAComm::init(uint8 inPin, uint8 outPin, uint8 intPin, uint8 sendPin)
 
 void FPGAComm::deinit()
 {
-	detachInterrupt(this->interruptPin);
+	detachInterrupt(in.interrupt);
 
 	this->initialized = false;
 }
 
 void FPGAComm::send(FPGAOutPacket outPacket)
 {
-	if (outPacket.testing) {
-		digitalWrite(outPin, HIGH);
+	// write the command
+	if (outPacket.drive) {
+		digitalWrite(out.drive, HIGH);
+		digitalWrite(out.turn, LOW);
 	}
 	else {
-		digitalWrite(outPin, LOW);
+		digitalWrite(out.drive, LOW);
+		digitalWrite(out.turn, HIGH);
 	}
 
-	// bring the interrupt pin high, wait for .1 seconds, and bring down
-	digitalWrite(sendPin, HIGH);
+	// write the data
+	for (int n = 0; n < 4; n++) {
+		if ((outPacket.data >> n) & 1) {
+			digitalWrite(out.dataStart + n, HIGH);
+		}
+		else {
+			digitalWrite(out.dataStart + n, LOW);
+		}
+	}
+
+	// bring int high, allow time to settle
+	digitalWrite(out.interrupt, HIGH);
 	delay(100);
-	digitalWrite(sendPin, LOW);
+	digitalWrite(out.interrupt, LOW);
 }
 
 void FPGAComm::receive(FPGAInPacket* inPacket)
 {
-	inPacket->testing = digitalRead(inPin);
+	inPacket->leftWall = digitalRead(in.leftWall);
+	inPacket->frontWall = digitalRead(in.frontWall);
+	inPacket->rightWall = digitalRead(in.rightWall);
 }
 
 // intterrupt handler
