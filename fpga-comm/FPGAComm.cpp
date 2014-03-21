@@ -37,6 +37,7 @@ void FPGAComm::init(FPGAPinInLayout inLayout, FPGAPinOutLayout outLayout)
 	pinMode(in.rightWall, INPUT);
 
 	// attach the interrupt
+	pinMode(in.interrupt, INPUT);
 	attachInterrupt(in.interrupt, FPGACommIH, RISING);
 
 	// configure the outputs
@@ -98,7 +99,7 @@ void FPGAComm::receive(FPGAInPacket* inPacket)
 	newData = true;
 }
 
-bool FPGAComm::isNewData()
+volatile bool FPGAComm::isNewData()
 {
 	return newData;
 }
@@ -112,6 +113,8 @@ void FPGACommIH()
 	comm->receive((FPGAInPacket*)&lastPacket);
 
 	digitalWrite(BOARD_LED_PIN, HIGH);
+
+	return;
 }
 
 #endif

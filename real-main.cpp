@@ -43,6 +43,9 @@ void loop(void) {
 		SerialUSB.print("RightWall: ");
 		SerialUSB.println(packet.rightWall);
 	}
+	else {
+		SerialUSB.println("No new data");
+	}
 
 	//toggleLED();
 	digitalWrite(BOARD_LED_PIN, LOW);
