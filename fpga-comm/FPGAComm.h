@@ -15,13 +15,25 @@ class FPGAComm
 {
 	// Private Members
 private:
-	static FPGAComm singleton;
+	FPGAComm singleton;
+	volatile FPGAInPacket lastPacket;
+
+	bool initialized;
+
+	uint8 inPin;
+	uint8 outPin;
+	uint8 intPin;
+
+private:
+	FPGAComm();
+	~FPGAComm();
 
 public:
-	FPGAComm();
+	FPGAComm getInstance();
+	FPGAInPacket getLastPacket();
+
+	void init(uint8 inPin, uint8 outPin, uint8i intPin);
+	void deinit();
 
 	void send(FPGAOutPacket outPacket);
-	FPGAInPacket recieve();
-
-	~FPGAComm();
 };
