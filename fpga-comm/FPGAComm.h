@@ -28,12 +28,13 @@ private:
 	uint8 inPin;
 	uint8 outPin;
 	uint8 interruptPin;
+	uint8 sendPin;
 
 public:
 	static FPGAComm* getInstance();
 	FPGAInPacket getLastPacket();
 
-	void init(uint8 inPin, uint8 outPin, uint8 intPin);
+	void init(uint8 inPin, uint8 outPin, uint8 intPin, uint8 sendPin);
 	void deinit();
 
 	void send(FPGAOutPacket outPacket);

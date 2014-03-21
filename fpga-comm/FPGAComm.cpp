@@ -25,15 +25,18 @@ FPGAInPacket FPGAComm::getLastPacket()
 	return *returnPacket;
 }
 
-void FPGAComm::init(uint8 inPin, uint8 outPin, uint8 intPin)
+void FPGAComm::init(uint8 inPin, uint8 outPin, uint8 intPin, uint8 sendPin)
 {
 	this->inPin = inPin;
 	this->outPin = outPin;
 	this->interruptPin = intPin;
+	this->sendPin = sendPin;
 
 	// properly configure the pins
 	pinMode(inPin, INPUT);
+
 	pinMode(outPin, OUTPUT);
+	pinMode(sendPin, OUTPUT);
 
 	// attach the interrupt
 	attachInterrupt(intPin, FPGACommIH, RISING);
@@ -51,7 +54,17 @@ void FPGAComm::deinit()
 
 void FPGAComm::send(FPGAOutPacket outPacket)
 {
+	if (outPacket.testing) {
+		digitalWrite(outPin, HIGH);
+	}
+	else {
+		digitalWrite(outPin, LOW);
+	}
 
+	// bring the interrupt pin high, wait for .1 seconds, and bring down
+	digitalWrite(sendPin, HIGH);
+	delay(100);
+	digitalWrite(sendPin, LOW);
 }
 
 void FPGAComm::receive(FPGAInPacket* inPacket)
@@ -65,10 +78,7 @@ void FPGACommIH()
 	// get an instance of the comm protocol
 	FPGAComm* comm = FPGAComm::getInstance();
 
-	FPGAInPacket inPacket;
-	comm->receive(&inPacket);
-
-	//comm->receive(&lastPacket);
+	comm->receive((FPGAInPacket*)&lastPacket);
 }
 
 #endif
