@@ -21,11 +21,8 @@ FPGAComm* FPGAComm::getInstance()
 
 FPGAInPacket FPGAComm::getLastPacket()
 {
-	//return (FPGAInPacket)lastPacket;
-
-	FPGAInPacket p;
-	return p;
-
+	FPGAInPacket* returnPacket = (FPGAInPacket*)&lastPacket;
+	return *returnPacket;
 }
 
 void FPGAComm::init(uint8 inPin, uint8 outPin, uint8 intPin)
@@ -40,6 +37,9 @@ void FPGAComm::init(uint8 inPin, uint8 outPin, uint8 intPin)
 
 	// attach the interrupt
 	attachInterrupt(intPin, FPGACommIH, RISING);
+
+	// zero out the last packet
+	memset((FPGAInPacket*)(&lastPacket), 0, sizeof(FPGAInPacket));
 }
 
 void FPGAComm::deinit()
