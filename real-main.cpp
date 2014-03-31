@@ -28,7 +28,6 @@ void setup(void) {
 }
 
 void loop(void) {
-
 	if (comm->isNewData()) {
 		SerialUSB.println("Found new data!");
 
