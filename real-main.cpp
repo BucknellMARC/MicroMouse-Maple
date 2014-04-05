@@ -1,54 +1,25 @@
 // Here's a wirish include:
 #include <wirish/wirish.h>
 
-#include "fpga-comm/FPGAComm.h"
+#include "control/ultrasonic.h"
 
-FPGAComm* comm;
+PingUltrasonic ultrasonic = PingUltrasonic(0);
 
 void setup(void) {
-	
-	// init the FPGA comm
-	comm = FPGAComm::getInstance();
-
-	FPGAPinInLayout inLayout;
-	inLayout.leftWall = D0;
-	inLayout.frontWall = D1;
-	inLayout.rightWall = D2;
-	inLayout.interrupt = D13;
-
-	FPGAPinOutLayout outLayout;
-	outLayout.drive = D6;
-	outLayout.turn = D7;
-	outLayout.dataStart = D8;
-	outLayout.interrupt = D12;
-
-	comm->init(inLayout, outLayout);
-
-	pinMode(BOARD_LED_PIN, OUTPUT);
 }
 
 void loop(void) {
-	if (comm->isNewData()) {
-		SerialUSB.println("Found new data!");
 
-		FPGAInPacket packet = comm->getLastPacket();
+	SerialUSB.println("Reading ultrasonic...");
 
-		SerialUSB.print("LeftWall: ");
-		SerialUSB.println(packet.leftWall);
+	int outValue = ultrasonic.readValue();
 
-		SerialUSB.print("FrontWall: ");
-		SerialUSB.println(packet.frontWall);
+	SerialUSB.print("Ultrasonic: ");
+	SerialUSB.print(outValue);
+	SerialUSB.println(" usecs");
 
-		SerialUSB.print("RightWall: ");
-		SerialUSB.println(packet.rightWall);
-	}
-	else {
-		SerialUSB.println("No new data");
-	}
-
-	//toggleLED();
-	digitalWrite(BOARD_LED_PIN, LOW);
-	delay(250);
+	// delay 1 second
+	delayMicroseconds(100000);
 }
 
 // Standard libmaple init() and main.
