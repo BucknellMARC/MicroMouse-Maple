@@ -1,7 +1,7 @@
 // Here's a wirish include:
 #include <wirish/wirish.h>
 
-#include "control/ultrasonic.h"
+#include "control/Ultrasonic.h"
 
 PingUltrasonic ultrasonic = PingUltrasonic(0);
 

@@ -3,7 +3,7 @@
 
 #include <wirish/wirish.h>
 
-#include "ultrasonic.h"
+#include "Ultrasonic.h"
 
 PingUltrasonic::PingUltrasonic(int listenPin)
 {

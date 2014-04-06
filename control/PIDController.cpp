@@ -1,32 +1,39 @@
 #ifndef PIDCONTROLLER_CPP
 #define PIDCONTROLLER_CPP
 
-#include "pidcontroller.h"
+#include "PIDController.h"
 
-PidController::PidController(int p, int i, int d)
+PIDController::PIDController(float p, float i, float d)
 {
 	// save away the constants
 	this->kp = p;
 	this->ki = i;
 	this->kd = d;
+
+	i = 0;
 }
 
-void PidController::setSetpoint(float setpoint)
+void PIDController::setSetpoint(float setpoint)
 {
 	this->setpoint = setpoint;
 }
 
-int PidController::calculate()
+float PIDController::calculate()
 {
 	float pos = 0;			// CHANGE - stubbed value
 
 	// compute the PID values
-	int p = pos - setpoint;
-	int i += pos - setpoint;
-	int d = (pos - setpoint) - (pos - lastSetpoint);
+	float p = pos - setpoint;
+	i += pos - setpoint;
+	float d = (pos - setpoint) - (pos - lastPos);
 
 	// return the sum of the values
 	return kp * p + ki * i + kd * d;
+}
+
+PIDController::~PIDController()
+{
+
 }
 
 #endif

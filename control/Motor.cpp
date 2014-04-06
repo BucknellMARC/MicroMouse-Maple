@@ -3,7 +3,7 @@
 
 #include <wirish/wirish.h>
 
-#include "encoder.h"
+#include "Encoder.h"
 #include "Motor.h"
 
 Motor::Motor(uint8 pwmPin, uint8 directionPin)
@@ -26,7 +26,7 @@ void Motor::setPower(float power)
 		this->direction = FORWARD;
 	}
 
-	pwmWrite(pwmPower, this->power * 255);
+	pwmWrite(pwmPin, this->power * 255);
 	// write the direction pin
 }
 
