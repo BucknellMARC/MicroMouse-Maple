@@ -65,7 +65,15 @@ cSRCS_$(d) :=
 # We can't call our main file main.cpp, or libmaple's build system
 # will get confused and try to build it without our CXXFLAGS. So call
 # it something else. Annoying! Hopefully LeafLabs will fix it soon.
-cppSRCS_$(d) := real-main.cpp fpga-comm/test.cpp fpga-comm/FPGAComm.cpp control/Ultrasonic.cpp control/Motor.cpp control/PIDController.cpp
+
+# main directory
+cppSRCS_$(d) := real-main.cpp
+
+# FPGA comm directory
+cppSRCS_$(d) += fpga-comm/test.cpp fpga-comm/FPGAComm.cpp
+
+# control directory
+cppSRCS_$(d) += control/Ultrasonic.cpp control/Motor.cpp control/PIDController.cpp
 
 # sSRCS_$(d) are the assembly sources. We don't have any.
 sSRCS_$(d) := 
