@@ -70,7 +70,7 @@ cSRCS_$(d) :=
 cppSRCS_$(d) := real-main.cpp
 
 # FPGA comm directory
-cppSRCS_$(d) += fpga-comm/test.cpp fpga-comm/FPGAComm.cpp
+cppSRCS_$(d) +=  fpga-comm/FPGAComm.cpp
 
 # control directory
 cppSRCS_$(d) += control/Ultrasonic.cpp control/Motor.cpp control/PIDController.cpp
