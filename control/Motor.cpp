@@ -6,28 +6,59 @@
 #include "Encoder.h"
 #include "Motor.h"
 
-Motor::Motor(uint8 pwmPin, uint8 directionPin)
+Motor::Motor(uint8 pwmPin, uint8 directionPin, uint8 brakePin)
 {
-	this->pwmPin = pwmPin;
-	this->directionPin = directionPin;
-
+	// configure the pins
 	pinMode(pwmPin, PWM);
 	pinMode(directionPin, OUTPUT);
+	pinMode(brakePin, OUTPUT);
+
+	// init with power at 0
+	this->pwmPin = pwmPin;
+	setPower(0.0f);
+
+	// set direction to forward to start out
+	this->directionPin = directionPin;
+	setDirection(FORWARD);
+
+	// brake is on to start
+	this->brakePin = brakePin;
+	setBrake(1);
 }
 
 void Motor::setPower(float power)
 {
-	if (power < 0) {
-		this->power = -power;
-		this->direction = BACKWARD;
+	this->power = power;
+	pwmWrite(pwmPin, power * 255);
+}
+
+void Motor::setDirection(int direction)
+{
+	this->direction = direction;
+
+	if (direction) {
+		digitalWrite(directionPin, HIGH);
 	}
 	else {
-		this->power = power;
-		this->direction = FORWARD;
+		digitalWrite(directionPin, LOW);
 	}
+}
 
-	pwmWrite(pwmPin, this->power * 255);
-	// write the direction pin
+void Motor::setBrake(int brake)
+{
+	this->brake = brake;
+
+	if (brake) {
+		digitalWrite(brakePin, HIGH);
+	}
+	else {
+		digitalWrite(brakePin, LOW);
+	}
+}
+
+float Motor::getPower()
+{
+	return power;
 }
 
 int Motor::getDirection()
@@ -35,17 +66,17 @@ int Motor::getDirection()
 	return direction;
 }
 
-float Motor::getPower()
+int Motor::getBrake()
 {
-	if (direction == BACKWARD) {
-		return -power;
-	}
-
-	return power;
+	return brake;
 }
 
 Motor::~Motor()
 {
+	// zero out all pins before releasing it
+	pwmWrite(pwmPin, 0);
+	digitalWrite(directionPin, LOW);
+	digitalWrite(brakePin, LOW);
 }
 
 #endif
