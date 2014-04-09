@@ -1,25 +1,22 @@
 // Here's a wirish include:
 #include <wirish/wirish.h>
 
-#include "control/Ultrasonic.h"
+#include "control/Motor.h"
 
-PingUltrasonic ultrasonic = PingUltrasonic(0);
+Motor motor = Motor(#pin1, #pin2, #pin3);
 
 void setup(void) {
+	SerialUSB.println("Starting motor test program");
 }
 
 void loop(void) {
-
-	SerialUSB.println("Reading ultrasonic...");
-
-	int outValue = ultrasonic.readValue();
-
-	SerialUSB.print("Ultrasonic: ");
-	SerialUSB.print(outValue);
-	SerialUSB.println(" usecs");
-
-	// delay 1 second
-	delayMicroseconds(100000);
+	SerialUSB.println("Motor test loop");
+	motor.setPower(0.5f);
+	delay(2500);
+	motor.setPower(0f);
+	delay(2500);
+	motor.setPower(1.0f);
+	delay(2500);
 }
 
 // Standard libmaple init() and main.
