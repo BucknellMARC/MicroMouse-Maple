@@ -2,14 +2,14 @@
 BASEDIR := $(shell pwd)
 
 # Libmaple location
-LIB_MAPLE_HOME ?= /home/colin/documents/college/marc/libmaple
+LIB_MAPLE_HOME ?= /home/boolli/workspace/libmaple
 
 # Board configuration
 BOARD ?= maple
 MEMORY_TARGET ?= flash
 
 # Custom modules listed here.
-USER_MODULES := ../micromouse-sim/src/logic
+USER_MODULES := /home/boolli/workspace/MicroMouse-Sim/src/logic 
 
 # === You don't have to edit anything below this line ==========================
 
