@@ -4,3 +4,4 @@ micromouse-sim/
 
 *.sublime-project
 *.sublime-workspace
+*.tmp
