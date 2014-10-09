@@ -2,14 +2,14 @@
 BASEDIR := $(shell pwd)
 
 # Libmaple location
-LIB_MAPLE_HOME ?= /home/boolli/workspace/libmaple
+LIB_MAPLE_HOME ?= ../libmaple
 
 # Board configuration
 BOARD ?= maple
 MEMORY_TARGET ?= flash
 
 # Custom modules listed here.
-USER_MODULES := /home/boolli/workspace/MicroMouse-Sim/src/logic 
+USER_MODULES := ../MicroMouse-Sim/src/logic
 
 # === You don't have to edit anything below this line ==========================
 
@@ -30,7 +30,7 @@ export USER_MODULES := $(BASEDIR) $(USER_MODULES)
 # If it still reporting "No rule to make target `all'" false error
 # while project build, then you may fix it this way:
 #     1) go to Project proprties -> C/C++ Build -> Behaviour tab
-#     2) change build target name from "all" to "sketch"   
+#     2) change build target name from "all" to "sketch"
 
 all: sketch
 
