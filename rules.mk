@@ -14,7 +14,7 @@ include $(MAKEDIR)/header.mk
 # the variable BUILDDIRS, like this. $(BUILD_PATH) is the directory
 # where compilation output (like object files) goes. The variable $(d)
 # gets expanded to the directory containing this rules.mk file.
-PROJECT_BUILD_DIRS := fpga-comm control
+PROJECT_BUILD_DIRS := fpga-comm
 
 BUILDDIRS += $(addprefix $(BUILD_PATH)/$(d)/, $(PROJECT_BUILD_DIRS))
 
@@ -26,7 +26,7 @@ BUILDDIRS += $(addprefix $(BUILD_PATH)/$(d)/, $(PROJECT_BUILD_DIRS))
 # need to add it here.
 PROJECT_INCLUDE_DIRS := include
 
-EXTERNAL_INCLUDE_DIRS := /home/colin/documents/college/marc/micromouse-sim/src/
+EXTERNAL_INCLUDE_DIRS := ../micromouse-sim/src/
 
 FLAGS_ABS_INCLUDE := $(addprefix -I$(d)/, $(PROJECT_INCLUDE_DIRS))
 FLAGS_ABS_INCLUDE += $(addprefix -I/, $(EXTERNAL_INCLUDE_DIRS))
@@ -57,7 +57,7 @@ ASFLAGS_$(d) :=
 ### Source files
 
 # cSRCS_$(d) are the C source files we want compiled.
-cSRCS_$(d) := 
+cSRCS_$(d) :=
 
 # cppSRCS_$(d) are the C++ sources we want compiled.  We have our own
 # main.cpp, and one additional file.
@@ -65,18 +65,10 @@ cSRCS_$(d) :=
 # We can't call our main file main.cpp, or libmaple's build system
 # will get confused and try to build it without our CXXFLAGS. So call
 # it something else. Annoying! Hopefully LeafLabs will fix it soon.
-
-# main directory
 cppSRCS_$(d) := real-main.cpp
 
-# FPGA comm directory
-cppSRCS_$(d) +=  fpga-comm/FPGAComm.cpp
-
-# control directory
-cppSRCS_$(d) += control/Ultrasonic.cpp control/Motor.cpp control/PIDController.cpp
-
 # sSRCS_$(d) are the assembly sources. We don't have any.
-sSRCS_$(d) := 
+sSRCS_$(d) :=
 
 ###############################################################################
 
