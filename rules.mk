@@ -14,7 +14,7 @@ include $(MAKEDIR)/header.mk
 # the variable BUILDDIRS, like this. $(BUILD_PATH) is the directory
 # where compilation output (like object files) goes. The variable $(d)
 # gets expanded to the directory containing this rules.mk file.
-PROJECT_BUILD_DIRS := fpga-comm
+PROJECT_BUILD_DIRS := logic
 
 BUILDDIRS += $(addprefix $(BUILD_PATH)/$(d)/, $(PROJECT_BUILD_DIRS))
 
@@ -26,7 +26,7 @@ BUILDDIRS += $(addprefix $(BUILD_PATH)/$(d)/, $(PROJECT_BUILD_DIRS))
 # need to add it here.
 PROJECT_INCLUDE_DIRS := include
 
-EXTERNAL_INCLUDE_DIRS := ../micromouse-sim/src/
+EXTERNAL_INCLUDE_DIRS :=
 
 FLAGS_ABS_INCLUDE := $(addprefix -I$(d)/, $(PROJECT_INCLUDE_DIRS))
 FLAGS_ABS_INCLUDE += $(addprefix -I/, $(EXTERNAL_INCLUDE_DIRS))
